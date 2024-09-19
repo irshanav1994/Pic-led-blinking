@@ -1,0 +1,75 @@
+9---LCD scrolling--RIGHT
+
+
+
+
+
+
+#include <xc.h>
+void cmd(unsigned char a );
+void data(unsigned char a );
+void display(const char *p);
+
+void main(void) {
+    TRISC=TRISD=0X00;
+    cmd(0X01);
+    cmd(0X0F);
+    cmd(0XA3);//print (display hello)start from here[40-0xa7]//
+    //start from last position[40]]//
+     display("hello");
+    while(1)
+    {
+   
+    
+for(int i=0;i<20;i++)//19 times need shift//
+                {
+                cmd(0X1C);//rightshift//
+                 
+                 for(long i=0;i<=50000;i++);//delay//
+                }
+                cmd(0X02);//after 19 shift left back to home position// 
+                
+            }
+
+    
+    
+  
+    
+    
+    return;
+}
+
+
+void cmd(unsigned char a )  
+{
+    RC0=0;
+
+    RC1=0;
+    PORTD=a;
+    RC2=1;
+    for(int i=0;i<=100;i++);
+    RC2=0;
+    for(int i=0;i<=5000;i++);
+}
+
+
+
+void data(unsigned char a ) 
+{
+    RC0=1;
+    RC1=0;
+    PORTD=a;
+    RC2=1;
+    for(int i=0;i<=100;i++);
+    RC2=0;
+    for(int i=0;i<=5000;i++);
+}
+
+void display(const char *p) 
+{
+    while(*p)
+    {
+        data(*p);
+        p++;
+    }
+}

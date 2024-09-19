@@ -1,0 +1,32 @@
+#include <xc.h>
+  void main(void)
+ {
+      TRISC=0x01;
+      TRISD=0x00;
+      int count=0;
+
+    while(1)
+    {
+        if(RC0==1)
+        {
+          if (count==0)
+          {
+              
+              PORTD=0X01;
+          
+           count=1;
+        }
+        
+        else
+        {
+            PORTD=0X00;
+            count=0;
+        }
+        while(RC0==1);
+    }
+
+
+  
+    }
+      return;
+  }

@@ -1,0 +1,63 @@
+pwm-pgm2
+first switch press-25%
+2nd switch press-50%
+3rd switch press-75%
+
+timeperiod=Tosc*4*(PR2+1)*TMR2 prescalevalue
+           
+dutycycle=CCPR1L:CP1CON<5.4>*Tosc*TMR2prescale value
+
+CCPR1L:CP1CON<5.4>=x
+
+x=dutycycle/[Tosc*TMR2prescale value]
+
+
+
+
+#include <xc.h>
+void delay (void);
+
+void main(void) {
+    
+    TRISC=0X00;//set as port c as output oscilloscope connected ccp pin RC2//
+    TRISD=0X07;//set as input .pullup ckt is connected here//
+    T2CON=0X06;//T2CON set no ned pot scalar values//
+    PR2=255;
+   
+    while(1)
+    {
+        if(RD0==1)//if first switch is pressed 25% on o/p wave//
+        {
+          CCP1CON=0X0C;
+    CCPR1L=0X40; //value obtained by calculation// 
+        }
+        else if(RD1==1) //if first switch is pressed 50% on o/p wave//
+
+        {
+             CCP1CON=0X0C;
+    CCPR1L=0X80;
+        }
+      else if(RD2==1)//if first switch is pressed 75% on o/p wave//
+
+      {
+          CCP1CON=0X0C;
+    CCPR1L=0XC0;
+      }
+        
+    }
+    
+    
+    
+    
+    return;
+}
+
+void delay(void)
+{
+   
+    while(TMR2IF==0);
+    TMR2IF=0;//1 AAYAL 0 AAKAAN
+    PR2=255;
+ 
+}
+

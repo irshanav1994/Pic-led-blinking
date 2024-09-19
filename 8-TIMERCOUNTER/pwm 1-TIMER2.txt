@@ -1,0 +1,56 @@
+
+timeperiod=Tosc*4*(PR2+1)*TMR2 prescalevalue
+           
+dutycycle=CCPR1L:CP1CON<5.4>*Tosc*TMR2prescale value
+
+CCPR1L:CP1CON<5.4>=x
+
+x=dutycycle/[Tosc*TMR2prescale value]
+
+
+
+timeperiod=[1/20000000]*4*[255+1]*16=0.0008192=819 microseconds
+dutycycle=timeperiod/2=409.6 microseconds
+x= 409.6/[1/20000000]*16=512
+
+512  =0010 0000 0000  binary value of 512
+        10 0000 0000    make it 10 bit removing 00 bit in msb
+
+        10 0000 00    00
+
+
+CCPR1L=10 0000 00= 0X80
+
+
+CCP1CON=00  5th and 4 th bit=0X0C
+
+
+
+
+
+
+
+#include <xc.h>
+void delay (void);
+
+void main(void) {
+    
+    TRISC=0X00;
+    T2CON=0X06;
+    PR2=255;
+    CCP1CON=0X0C;
+    CCPR1L=0X80;
+    while(1);
+    
+    return;
+}
+
+void delay(void)
+{
+   
+    while(TMR2IF==0);
+    TMR2IF=0;//1 AAYAL 0 AAKAAN
+    PR2=255;
+ 
+}
+

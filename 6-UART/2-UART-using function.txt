@@ -1,0 +1,19 @@
+#include <xc.h>
+void transmit (void);
+
+void main(void) {
+    
+    TRISC=0X00;
+    TXSTA=0X24;
+    RCSTA=0X90;
+    BAUDCON=0X00;
+    SPBRG=129;
+    transmit();
+    
+}
+void transmit(void)
+{
+   TXREG='A';
+    while(TXIF==0);//txif=0 transmit continuous, if txif=1 [to understand all data transmission is completed//transmit is finished//
+    TXIF=0;//[when pgm exit from this while(TXIF==0).then again data transmisin want to continue]. data FLAG CLEAR// 
+}

@@ -1,0 +1,28 @@
+LCD--1---TYPE1-OPERATION-(CLEAR OAND SET POSITION-)--LCD CLEAR
+
+
+#include <xc.h>
+void main(void)
+ {
+    TRISC=TRISD=0X00;//PORTC AND PORT D SET AS OUTPUT//
+    RC0=0; //RS=0--RS CONNECTED TO PIN RCO OF PORTC//
+    RC1=0; //RW=0--RS CONNECTED TO PIN RC1 OF PORTC//
+
+    PORTD=0X01;//FOR CLEAR THE LCD--DB0=1 [PORTD-RD0]  HEX VALUE IS 0X01//
+
+    RC2=1;//ENABLE PIN E IS CONNECTED RC2,RC2=1.NEED MINIMUM 200 NANOSECONDS DELAY-not need to communicate continuously b/w microcrl and lcd microclr//
+    for(int i=0;i<=100;i++);
+    RC2=0;
+    for(int i=0;i<=5000;i++);//LCD NEED A DELAY TO EXECUTE PGM//
+
+
+    RC0=0;
+    RC1=0;
+    PORTD=0X0F;//ON OFF ,CURSER,BLINKING---RD0=RD1=RD2=RD3=1 [DB0 TO DB3 IS 1---1-D-C-B(DATASHEET)]SO HEX VALUE IS 0X0F//
+
+    RC2=1;
+    for(int i=0;i<=100;i++);
+    RC2=0;
+    for(int i=0;i<=5000;i++);
+    return;
+}

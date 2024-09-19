@@ -1,0 +1,27 @@
+COMPONENT NAME-VIRTUAL TERMINAL USED
+TXR  SET AS OUTPUT
+RXRSET AS  INPUT
+
+
+
+
+#include <xc.h>
+
+
+void main(void) {
+    
+    TRISC=0X00;//set port c as output(rc6 TX oin is used here)
+    TXSTA=0X24;//set registers//
+    RCSTA=0X90;//set registers//
+    BAUDCON=0X00;//set registers//
+    SPBRG=129;//set registers//
+   
+    
+
+
+   TXREG='A';//register to store data to be transfered//
+
+    while(TXIF==0);//txif=0 transmit continuous, if txif=1 [to understand all data transmission is completed//transmit is finished//
+
+    TXIF=0;//[when pgm exit from this while(TXIF==0).then again data transmisin want to continue]. data FLAG CLEAR// 
+}

@@ -1,0 +1,114 @@
+7seg 4digit switch display
+one pullup ckt -switch is used
+
+each pressing of switch need to increment values or count 0 to 9999 .
+
+first performs i loop
+first number in right then second j perform 2,then k and then l.
+
+
+
+
+#include <xc.h>
+void delay();
+ unsigned char a[]={0X3F,0X06,0X5B,0X4F,0X66,0X6D,0X7D,0X07,0X7F,0X6F};
+void main(void) {
+    
+    
+    TRISD=0X00;//set as output//
+    TRISC=0X00;//set as output//
+    TRISB=0X01;//switch is connected in portb//
+    ADCON1=0X0F;//port b is used ,so need ADC//
+    int i,j,k,l;
+    
+    
+    
+        
+    while(1)
+    {
+       
+       PORTD=0X0E; //make RD0 pin is 0 to enable first 7seg display in 7seg4digit display// 
+       PORTC= a[i];// from i for loop 0 to 9 access//
+        delay();
+            
+            PORTD=0X0D;//make RD1 pin is 0 to enable first 7seg display in 7seg4digit display// 
+            PORTC=a[j];// from j for loop 0 to 9 access//
+            delay();
+            
+            
+            PORTD=0X0B;//make RD2 pin is 0 to enable first 7seg display in 7seg4digit display// 
+            PORTC=a[k];// from k for loop 0 to 9 access//
+            delay();
+            
+            
+            PORTD=0X07;//make RD3 pin is 0 to enable first 7seg display in 7seg4digit display// 
+            PORTC=a[l];// from l for loop 0 to 9 access//
+            delay();
+            
+            
+            if (RB0==1)//if switch is pressed//
+        {
+            l++;
+            if (l==10)
+    {
+     l=0;
+      
+    
+            k++;
+             if (k==10)  
+               
+            {
+                k=0;
+                
+             j++;
+            if(j==10)
+               
+            {
+                j=0;
+                
+                        
+            i++;
+             if (i==10)
+                
+            {
+                i=0;
+                
+            }
+        }
+             }}
+            
+              while(RB0==1)//switch pressed//
+    {
+       
+       PORTD=0X0E; 
+       PORTC= a[i];
+        delay();
+            
+            PORTD=0X0D;
+            PORTC=a[j];
+            delay();
+            
+            
+            PORTD=0X0B;
+            PORTC=a[k];
+            delay();
+            
+            
+            PORTD=0X07;
+            PORTC=a[l];
+            delay();
+              }
+            }
+    }
+    return;
+}
+            
+            
+        
+    
+        
+    
+  void delay()
+  {
+      for(unsigned int i=0;i<100;i++);
+  }

@@ -1,0 +1,36 @@
+
+
+L293D DRIVER
+MOTOR
+
+DC MOTOR--1--BASIC DC MOTOR PGM---ROTATE MOTOR CLOCK AND ANTIWISE CLOCK DIRECION AND STOP.
+
+delay is used here in function.
+
+
+
+#include <xc.h>
+void delay(void);
+void main(void)
+{
+    TRISC=0X00;
+    while(1)
+    {
+        PORTC=0X01;[RC0=1 or in =1--OUT1=VS - CLOCKWISE]
+        delay();
+
+        PORTC=0X02;[RC1=1 or in =1--OUT2=VS - ANTICLOCKWISE]
+
+        delay();
+
+        PORTC=0X00;[RC0=0 AND RC1=0 -OUT=STOP]
+        delay();
+    }
+}
+
+void delay(void)
+{
+    for(long i=0;i<=65000;i++);
+        
+    }
+

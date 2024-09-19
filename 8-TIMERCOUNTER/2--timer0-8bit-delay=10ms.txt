@@ -1,0 +1,39 @@
+delay=10ms
+TMR0?
+10ms=(4*256(2^8-TMRn))/20*10^6
+[10*10^-3]*[20*10^6]/4*256=2^8-TMRn
+[10*10^*3]*20/4*256=2^8-TMRn
+195.3125=2^8-TMRn
+TMRn=2^8-195.3125=60.68
+
+
+
+
+
+
+#include <pic18.h>
+void delay(void);
+
+void main(void)
+{
+    TRISD=0X00;//
+    
+    T0CON=0XC7;
+    TMR0=60.68;
+    while(1)
+    {
+        PORTD=0XFF;
+        delay();
+        PORTD=0X00;
+        delay();
+    }
+    return;
+}
+
+
+void delay(void)
+{
+    while(TMR0IF==0);//check [2nd bit of intcon interrupt register is]TMR0IF one// 
+        TMR0IF=0;//clear TMR0IF//
+    TMR0=60.68;//set initial value to start again fro same position//
+}

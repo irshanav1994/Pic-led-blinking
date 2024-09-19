@@ -1,0 +1,154 @@
+
+7-------same as lcd pgm -6
+to show first motor operations[clockwise,anti,stop] in first line of lcd display and  second motor operation in second line of lcd.  keep motor1 tatus along  with motor 2 status,for this purpose not clear after motor 1pgm.
+
+
+cmd ox38  function set 8 bit,2 line,size of chara
+cmd 0x80   start from 1st line
+cmd 0xc0   start from 2nd line
+
+these commands are used here for display 1st and 2 nd line. all other are same as lcd pgm no 5
+
+
+
+
+
+
+
+
+
+#include <xc.h>
+void cmd (unsigned char a);
+void data (unsigned char a);
+void display(const char *p);
+    
+  void main(void) 
+{
+    TRISC=0X01;//set RC0 pin portc as input//
+    TRISD=0X00;     //set portd as output//
+    TRISB=0X08;    //set RB3pin of port b as input//
+    int count1=-1;
+    int count2=-1;//variable c or count declaration  and initialization for motor//
+    cmd(0X01);    //clear the lcd display/ /
+    cmd(0X0F);   //display on curser blinking command of lcd//
+    cmd(0X38);    //enable 8bit,5*7,2 line display mode in lcd//
+    
+    while(1)   //infinite loop ,it is exit only give a break statement or condition get false//
+    {
+        if(RC0==1)    //check the switch connected rc0 is pressed//check switch 1 is pressed-on-1//cond is true then go to check count=2 ,cond is false it goes count=0 condition//
+    {
+        if(count1==2)    //countI 2 then make count is -1 //
+        {
+            count1=-1;   //reset count1 to -1 if it is 2//
+    }
+        
+        count1++;  //count is incremented//
+
+        while(RC0==1); //hold the pgm until switch is released other wise counter value will increment.  //for holding the program,otherwise count is go to next condition and display anticlockwise[COUNT INCREMEMTED].so hold RC0==1 keep on switch//
+
+        //normally in motor pgm if(rc0==1) bracket closed here.but in this case this brace closed last of motor 1 stop  statement.bz  clkwise clkwise continuously shows in lcd.//
+
+        cmd(0X01);//command for clear lcd[othrwie display lik this -clkwise anticlkwise stop]//
+    
+        cmd(0X80);//set curser to first line to display motor 1 status in first line of lcd //
+
+
+    if(count1==0)
+    {
+        PORTC=0X02;//set port c to rotate motor1 in clockwise direction//
+         display("1clkwise");//command for lcd to display motor1 status//
+    }
+        
+    else if(count1==1)
+    {
+        PORTC=0X04;
+         display("1anticlock");
+    }
+        
+        else if(count1==2)
+         
+     {
+         PORTC=0X00;
+          display("motor1stop");
+     }
+    }
+        
+        
+        
+   if(RB3==1)
+    {
+        if(count2==2)
+        {
+            count2=-1;   
+    }
+        
+        count2++;
+        while(RB3==1);
+        
+       // here clear command is removed bz we need to keep display in first line with motor2 disply status. so no ned to clear 1st motor status//
+        
+        cmd(0XC0);//to display motor2 status in 2 second line of lcd//
+
+    if(count2==0)
+    {
+        PORTC=0X08;  //set port c to rotate motor2 in clockwise direction//
+         display("2clkwise        ");//command for lcd to display motor1 status//
+    }
+        
+    else if(count2==1)
+    {
+        PORTC=0X10;  //set port c to rotate motor2 in anticlockwise direction//
+         display("2anticlk        ");//command for lcd to display motor2 status//
+    }
+        
+        else if(count2==2)
+         
+     {
+         PORTC=0X00;
+          display("2stop           ");     //  5 characters is here,lcd 16 bit so after this five character need to give 11 space(11+5=16)then only get 2stop in lcd display.other wise it see like 2stop clkwise[fill remaining area ]
+     }
+    }     
+        
+        
+    }
+    
+    while(1);
+    return;
+
+}
+    
+   //function definitions for lcd// 
+    void cmd (unsigned char a)//cmd sends commands to the lcd by setting rs rw e//
+    {
+        RC5=0;//rs is 0//
+        RC6=0;//rw is zero//
+        PORTD=a;
+        RC7=1;//enable need a delay of 200ns//
+        for(int i=0;i<=100;i++);
+        RC7=0;
+        for(int i=0;i<=5000;i++);//microcontroller need a delay for execute the pgm//
+        
+        
+    }
+    
+    
+ 
+    void data (unsigned char a)//data is sends data to the lcd by setting rc5 pin is high,rw is low and a delay is provided for enable//
+    {
+        RC5=1;
+        RC6=0;
+        PORTD=a;
+        RC7=1;
+        for(int i=0;i<=100;i++);
+        RC7=0;
+        for(int i=0;i<=5000;i++);
+    }
+     void display(const char *p)//display sends a string of characters to the lcd//
+     //it is uses the data function to send each charecter individually until the end of the string//
+     {
+         while(*p)
+         {
+             data(*p);
+         p++;
+         }
+     }

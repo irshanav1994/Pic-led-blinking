@@ -1,0 +1,50 @@
+3---TO BLINK 8 LEDS OF PORT C ONE BY ONE-reverse 
+
+0x80=128
+0x40=64
+0x20=32
+ox10=16
+0x08=8
+0x04=4
+0x02=2
+0x01=1
+
+
+#include <xc.h>
+
+void main(void) {
+    
+    TRISC=0X00;
+    while(1)
+    {
+        
+     
+        PORTC=0X80;
+        for(unsigned int i=0;i<=62000;i++){}
+       PORTC=0X40;
+        for(unsigned int i=0;i<=62000;i++){}
+        PORTC=0X20;
+        for(unsigned int i=0;i<=62000;i++){}
+         PORTC=0X10;
+        for(unsigned int i=0;i<=62000;i++){}
+      
+     
+      PORTC=0X08;
+        for(unsigned int i=0;i<=62000;i++){}
+      PORTC=0X04;
+        for(unsigned int i=0;i<=62000;i++){} 
+       PORTC=0X02;
+        for(unsigned int i=0;i<=62000;i++){}
+        PORTC=0X01;
+        for(unsigned int i=0;i<=62000;i++){}
+       
+      
+      
+    }
+    return;
+}
+
+
+
+
+

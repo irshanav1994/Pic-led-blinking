@@ -1,0 +1,33 @@
+7segment-pgm -1    
+
+component name-7seg mpx1 cc
+display 2
+ABGED
+0X5B
+
+
+
+
+
+
+
+
+#include <xc.h>
+
+void main(void) {
+    
+    TRISC=0X00;
+    
+    
+   
+    
+    while(1)
+    {
+     
+                PORTC=0X5B;
+     
+        }
+    
+    
+    return;
+}

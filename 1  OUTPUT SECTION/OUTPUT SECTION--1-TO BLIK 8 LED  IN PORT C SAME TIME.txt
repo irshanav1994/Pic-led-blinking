@@ -1,0 +1,19 @@
+1-----TO BLIK 8 LED  IN PORT C SAME TIME
+
+
+#include <xc.h>
+
+void main(void) {
+    
+    TRISC=0X00;/*set port c as output*/
+    while(1)
+    {
+        PORTC=0XFF;/*set portc to high output*/
+        for(unsigned int i=0;i<=62000;i++);/*providing  delay*/
+
+        PORTC=0X00;/*set portc to low output*/
+        for(unsigned int i=0;i<=62000;i++);/*providing  delay*/
+
+    }
+    return;
+}

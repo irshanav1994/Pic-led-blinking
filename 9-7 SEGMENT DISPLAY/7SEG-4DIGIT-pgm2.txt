@@ -1,0 +1,52 @@
+
+
+7 segment -4 digit 
+
+display 1 to 9999 in display
+[adjust delay to count up to 9999-but not reached 9999-up to 6000 when delay  near6000]
+
+
+
+#include <xc.h>
+void delay();
+ unsigned char a[]={0X3F,0X06,0X5B,0X4F,0X66,0X6D,0X7D,0X07,0X7F,0X6F};
+void main(void) {
+    
+    
+    TRISD=0X00;
+    TRISC=0X00;
+    while(1){
+        for(unsigned char i=0;i<=9;i++){
+        for(unsigned char j=0;j<=9;j++){
+        for( unsigned char k=0;k<=9;k++){
+        for( unsigned char l=0;l<=9;l++){
+            for(int rep=0;rep<=100;rep++)
+        {
+       PORTD=0X0E; 
+       PORTC= a[i];
+        delay();
+            
+            PORTD=0X0D;
+            PORTC=a[j];
+            delay();
+            
+            
+            PORTD=0X0B;
+            PORTC=a[k];
+            delay();
+            
+            
+            PORTD=0X07;
+            PORTC=a[l];
+            delay();
+        }
+        }
+        }
+        }
+        }
+    }
+}
+  void delay()
+  {
+      for(unsigned int i=0;i<500;i++);
+  }

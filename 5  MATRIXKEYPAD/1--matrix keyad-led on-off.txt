@@ -1,0 +1,109 @@
+1---4*4 matrix keypad to led on and led off
+
+LCD
+4*4 MATRIX KEYPAD---PULL DOWN CKT-pull up resistor and button
+
+--total 16 switchs connected in 4*4 method.4 row and 4 coloumn.4 coloumn of [switch input] is input [pulldown ckt] ,it is connected PORTB- RB4 ,RB5 ,RB6 ,RB7. 
+oher 4 pins in raws[switch out] is switchoutput it is connected PORTB RB0,RB1,RB2,RB3.
+RB0=0
+
+
+
+
+
+
+#include<xc.h>
+void main(void) 
+{
+    ADCON1=0X0F;    //portb is analog pins so need to convert analog to digital convertion.so this command is used here.//
+    TRISB=0XF0; //1111 0000   portb  set as input9RB4 TO RB7 is input pins//
+    TRISC=0X00;//seta s output port//
+    
+    
+    while(1)
+    {
+    PORTB=0X0E;      //make rb0=0 to avoid cofusion of microcontroller[00001110=0x0E].RB4 TO RB7 IS ZERO(PULLDOWNCKT).first RB0=0,hen RB1=0 all other one[00001101-0X0D]    then RB2=0[000001011-0X0B]    then RB3=0[00000111-0X07]
+
+    if(RB4==0)  //RB4 is pressed[pulldownckt ON is zero]
+    {
+        RC0=1;//FIRST LED IN PORT C IS ON //
+    }
+    else if(RB5==0)
+    {
+        RC1=1;
+    }
+    else if(RB6==0)
+    {
+        RC2=1;
+    }
+    else if(RB7==0)
+    {
+        RC3=1;
+    }
+
+
+    PORTB=0X0D;
+
+
+     if(RB4==0)
+    {
+        RC4=1;
+    }
+    else if(RB5==0)
+    {
+        RC5=1;
+    }
+    else if(RB6==0)
+    {
+        RC6=1;
+    }
+    else if(RB7==0)
+    {
+        RC7=1;
+    }
+
+
+PORTB=0X0B;
+
+
+     if(RB4==0)
+    {
+        RC0=0;//FIRST LED IN PORT C IS OFF //
+
+    }
+    else if(RB5==0)
+    {
+        RC1=0;
+    }
+    else if(RB6==0)
+    {
+        RC2=0;
+    }
+    else if(RB7==0)
+    {
+        RC3=0;
+    }
+
+
+    PORTB=0X07;
+
+
+    if(RB4==0)
+    {
+        RC4=0;
+    }
+    else if(RB5==0)
+    {
+        RC5=0;
+    }
+    else if(RB6==0)
+    {
+        RC6=0;
+    }
+    else if(RB7==0)
+    {
+        RC7=0;
+    }
+    }
+    return;
+}

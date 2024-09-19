@@ -1,0 +1,63 @@
+INPUTSECTION--2---PULLUP CKT-RC0,RC1,RC2-INPUT(PUSHBUTTON)
+RC0-8 LED IN PORT D LED SAME TIME BLINKING
+RC1-ONE BY ONE LED BLINKING
+RC2-ONE BY ONE LED BLINKING REVERSE
+PORTD-OUTPUT
+
+#include <xc.h>
+
+void main(void) {
+    
+    
+    TRISC= 0XFF;/*SET PORT C AS INPUT=0XFF OR[RC0,RC1,RC2 -PORTC=0X07]*/
+    TRISD=0X00;/*SET PORT C AS OUTPUT*/
+    while(1)
+    {
+    
+    if(RC0==1) /* TO BLINK 8 LED SAME TIME*/ 
+    {
+        PORTD=0XFF;
+        PORTD=0X00;
+    }
+    else
+    {
+        PORTD=0X00;/*RC0 IS NOT 1 THEN NO NEED TO LED BLINK.KEEP IT IS OFF*/
+    }
+
+
+    
+    if(RC1==1)/*TO BLINK 8 LED ONE BY ONE*/
+    {
+        for(int i=1;i<=128;i=i*2)
+        {
+            PORTD=i;
+            for(unsigned int j=0;j<=62000;j++);
+        }
+    }
+    else
+    {
+        PORTD=0X00;
+        
+    }
+    
+    
+     
+    
+     if(RC2==1)/*TO BLINK 8 LED ONE BY ONE-REVERSE*/
+
+    {
+        for(int k=128;k>=1;k=k/2)
+            
+        {
+            PORTD=k;
+             for(unsigned int j=0;j<=62000;j++);
+        }
+    }
+    else
+    {
+        PORTD=0X00;
+  } 
+    }
+
+    return;
+}

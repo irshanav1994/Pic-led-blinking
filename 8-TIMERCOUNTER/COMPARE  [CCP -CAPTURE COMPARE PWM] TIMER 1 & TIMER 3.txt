@@ -1,0 +1,29 @@
+CCP -CAPTURE COMPARE PWM
+
+COMPARE-compare 2 values
+
+
+
+
+#include <xc.h>
+void delay(void);
+
+void main(void) {
+    TRISC=0X00;//set port c as out-ccp pin-RC2//
+     TMR1=00;//TIMER 1 AND TIMER3 is associated with compare//
+    T1CON=0X31;//set timer1 register t1con //
+    CCP1CON=0X02;//set CCP1CON register -toggle condition[values in register]apply//
+    CCPR1H=0X20;//values need to compare//
+    CCPR1L= 0X10;//values need to compare//
+   
+    while(1);
+    return;
+}
+void delay(void)
+{
+   
+    while(TMR1IF==0);//timer 1 interrupt flag//
+    TMR1IF=0;
+    TMR1=00;//initialise value//
+ 
+}

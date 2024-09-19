@@ -1,0 +1,92 @@
+
+ADC=11 PIN
+10 BIT-cnvertion of analog input signal a corresponding 10 bit digital number.
+[2^10]-1=1024
+in output display in lcd shows 0 to 1024 by varying pot
+
+PIC18F4580
+DC VOLTMETER
+LCD LM016
+POT-HG
+
+
+
+  
+    #include <xc.h>
+#include<stdio.h>//sprintf function is present//
+void cmd(unsigned char a );//lcd on ,clearcommands//
+void data(unsigned char a );
+//data[charecters] display//
+void display(const char *p);//string display//
+
+void main(void)
+{
+    TRISC=TRISD=0X00;//setas out -lcd//
+TRISA=0X01;//input to PORTA [ADC PINS-AN0 PIN ]
+    
+    cmd(0X01);//lcd clear//
+    cmd(0X0F);//lcd on//
+    cmd(0X38);//16bit 2line 5/7 enable//
+    cmd(0x0c);//curser off//
+    ADCON0=0X01;//AD enable//// bit1=1 it is conversion progress pin or make GO=1//
+    ADCON1=0X00;//set AD control reg 1//
+    ADCON2=0X86;//set AD control reg 2 from datasheet-ADFM//
+    
+   
+   
+    while(1)
+    {
+        int adc;//adc declared--10 bit ADC,so char cant use [8bit], int is 2 byte//
+        char cnv[15];//array to store out string//
+        GO=1;//convertion start//
+        while(ADIF==0);//[pgm wait for ADIF to go high conv complte]check the ad flag is zero//
+        ADIF=0;
+        adc=ADRES;//result stored[converted adc value] in ADRES reg moved to adc- //ADRESH ADRESL result high and low-common ADRES//
+        sprintf(cnv,"adc value %4d",adc);//[ADC value ]convert cheytha value string leku matan//
+        cmd(0X80);
+        display(cnv);//display out string//
+    }
+    
+   
+   return;
+}
+
+
+void cmd(unsigned char a )  
+{
+    RC0=0;
+
+   //RC1=0;//enable pin connected to ground//
+    PORTD=a;
+    RC2=1;
+    for(int i=0;i<=100;i++);
+    RC2=0;
+    for(int i=0;i<=5000;i++);
+}
+
+
+
+void data(unsigned char a ) 
+{
+    RC0=1;
+    //RC1=0;
+    PORTD=a;
+    RC2=1;
+    for(int i=0;i<=100;i++);
+    RC2=0;
+    for(int i=0;i<=5000;i++);
+}
+
+void display(const char *p) 
+{
+    while(*p)
+    {
+        data(*p);
+        p++;
+    }
+}
+
+
+
+
+

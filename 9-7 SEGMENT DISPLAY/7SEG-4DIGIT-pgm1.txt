@@ -1,0 +1,43 @@
+#include <xc.h>
+7segment 4 digit display--cc common cathode
+display 1 2 3 4
+
+
+component name-7seg MPX4 CC
+
+
+
+
+
+void main(void) {
+    
+    TRISC=0X00;
+    TRISD=0X00;
+    PORTC=0X00;
+    unsigned char a[10]={ 0X3F,0X06,0X5B,0X4F,0X66,0X6D,0X7D,0X07,0X7F,0X6F};
+    
+    while(1)
+    {
+        PORTD=0X0E;//enable firt pin by put zero RD0=0,RD1=1,RD2=1,RD3=1//
+       PORTC=a[1];//display one//
+     for(long i=0;i<=1000;i++);//delay//
+     
+     PORTD=0X0D;//enable second pin by put zero RD0=1,RD1=0,RD2=1,RD3=1//
+
+     PORTC=a[2];
+
+     for(long i=0;i<=1000;i++);
+     
+     PORTD=0X0B;//enable 3rd pin by put zero RD0=1,RD1=1,RD2=0,RD3=1//
+     PORTC=a[3];
+     for(long i=0;i<=1000;i++);
+     
+     PORTD=0X07;//enable 3rd pin by put zero RD0=1,RD1=1,RD2=1,RD3=0//
+        PORTC=a[4];
+     for(long i=0;i<=1000;i++);
+     
+        }
+    
+
+    return;
+}

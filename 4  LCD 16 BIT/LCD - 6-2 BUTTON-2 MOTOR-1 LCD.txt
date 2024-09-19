@@ -1,0 +1,188 @@
+
+
+
+same as lcd pgm -5
+to show first motor operations[clockwise,anti,stop] in first line of lcd display and  second motor operation in second line of lcd
+
+
+cmd ox38  function set 8 bit,2 line,size of chara
+cmd 0x80   start from 1st line
+cmd 0xc0   start from 2nd line
+
+these commands are used here for display 1st and 2 nd line. all other are same as lcd pgm no 5
+
+
+
+
+
+
+#include <xc.h>
+
+void cmd (unsigned char a);
+void data(unsigned char a);
+void display (const char *p);
+
+void main(void) 
+{
+    
+    TRISC=0X01;
+    TRISD=0X00;
+    TRISB=0XFF;
+    int count=-1;
+    
+    cmd(0X01);
+    cmd(0X0F);
+    cmd(0X38);  // TO DISPLAY SECOND LINE( FROM DATA SHEET -FUNCTION SET OR LCD COMMANDS 2 LINE)//
+   
+    
+    
+    
+  while(1)
+    {
+  
+         
+        if(RC0==1)
+        {
+            if(count==2)
+            {
+                count=-1;
+            }
+        
+        
+        count++;
+        while(RC0==1);
+        
+    
+        cmd(0X01);//clear lcd//
+
+        cmd(0X80);//start from first line of lcd display-lcd command//
+            
+            
+        if(count==0)
+            
+        {
+            
+            PORTC=0X02;
+            display("clockwise"); 
+            
+           
+          
+ }
+           
+           
+            
+        
+ else if(count==1)
+         {
+          PORTC=0X04;
+        
+         display("anticlockwise");
+        
+         
+            
+         }
+            
+      
+           else if(count==2)
+         {
+        PORTC=0X00;
+        
+         
+   display("stop");
+  
+  
+            
+         }
+        }
+        
+         
+  
+        
+   if(RB3==1)
+        {
+            if(count==2)
+            {
+                count=-1;
+            }
+        
+        
+        count++;
+        while(RB3==1);
+        
+    
+        cmd(0X01);  //clear lcd//
+
+
+         cmd(0XC0);  //start from second line of lcd display-lcd command//
+            
+            
+        if(count==0)
+            
+        {
+            
+            PORTC=0X08;
+            display("motor2clockwise");     
+          
+ }
+           
+           
+            
+        
+ else if(count==1)
+         {
+          PORTC=0X10;
+        
+         display("motor2anticlockwise");
+     
+         }
+            
+      
+           else if(count==2)
+         {
+        PORTC=0X00;
+        
+        display("motor2stop");
+  
+ }
+   }  
+        
+  }
+       
+
+while(1);  
+ return;
+    }
+
+
+ void cmd (unsigned char a)
+  {
+     
+    RC5=0;
+    RC6=0;
+    PORTD=a;
+    RC7=1;
+    for(int i=0;i<=100;i++);
+    RC7=0;
+    for(int i=0;i<=5000;i++);
+}
+  
+  void data(unsigned char a)
+  {
+       RC5=1;
+    RC6=0;
+    PORTD=a;
+    RC7=1;
+    for(int i=0;i<=100;i++);
+    RC7=0;
+      for(int i=0;i<=5000;i++);
+  }
+  
+  void display (const char *p)
+  {
+      while(*p)
+      {
+          data(*p);
+          p++;
+      }
+  }
+  

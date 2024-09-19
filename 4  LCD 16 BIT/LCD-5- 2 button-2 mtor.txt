@@ -1,0 +1,178 @@
+
+
+2 button-2 dcmotor connected in l293d  driver -1 lcd[one witch is connected to port b RB3 PIN]
+if 1st button is pressed[on],rotate motor clockwise then show in lcd clockwise.
+next press of button[2 nd press or 2nd on] rotate motor anti clockwise then show in lcd anti clockwise.
+next press of button [3 rd press or 3rd on]stop motor then show in lcd stop.
+
+if 2nd button is pressed[on],rotate motor clockwise then show in lcd clockwise.
+next press of button[2 nd press or 2nd on] rotate motor anti clockwise then show in lcd anti clockwise.
+next press of button [3 rd press or 3rd on]stop motor then show in lcd stop.
+
+
+
+
+
+
+
+#include <xc.h>
+
+void cmd (unsigned char a);
+void data(unsigned char a);
+void display (const char *p);
+
+void main(void) 
+{
+    
+    TRISC=0X01;
+    TRISD=0X00;
+    TRISB=0XFF;
+    int count=-1;
+    
+    cmd(0X01);
+    cmd(0X0F);
+    
+    
+  while(1)
+    {
+  
+        
+        if(RC0==1)  //FIRST SWITCH AND FIRST MOTOR//
+        {
+            if(count==2)
+            {
+                count=-1;
+            }
+        
+        
+        count++;
+        while(RC0==1);
+        
+    cmd(0X01);
+            
+            
+        if(count==0)
+            
+        {
+            
+            PORTC=0X02;
+            display("clockwise"); 
+            
+           
+          
+ }
+           
+           
+            
+        
+ else if(count==1)
+         {
+          PORTC=0X04;
+        
+         display("anticlockwise");
+        
+         
+            
+         }
+            
+      
+           else if(count==2)
+         {
+        PORTC=0X00;
+        
+         
+   display("stop");
+  
+  
+            
+         }
+        }
+        
+        
+        
+   if(RB3==1)//SECOND SWITCH AND SECOND MOTOR//
+
+        {
+            if(count==2)
+            {
+                count=-1;
+            }
+        
+        
+        count++;
+        while(RB3==1);
+        
+    
+        cmd(0X01);
+            
+            
+        if(count==0)
+            
+        {
+            
+            PORTC=0X08;
+            display("motor2clockwise");     
+          
+ }
+           
+           
+            
+        
+ else if(count==1)
+         {
+          PORTC=0X10;
+        
+         display("motor2anticlockwise");
+     
+         }
+            
+      
+           else if(count==2)
+         {
+        PORTC=0X00;
+        
+        display("motor2stop");
+  
+ }
+   }  
+        
+  }
+       
+
+while(1);  
+ return;
+    }
+
+
+ void cmd (unsigned char a)  // LCD SETTINGS for clear and position//
+  {
+     
+    RC5=0;
+    RC6=0;
+    PORTD=a;
+    RC7=1;
+    for(int i=0;i<=100;i++);
+    RC7=0;
+    for(int i=0;i<=5000;i++);
+}
+  
+  void data(unsigned char a)  //DISPLAY OF LCD//
+  {
+       RC5=1;
+    RC6=0;
+    PORTD=a;
+    RC7=1;
+    for(int i=0;i<=100;i++);
+    RC7=0;
+      for(int i=0;i<=5000;i++);
+  }
+  
+  void display (const char *p)
+  {
+      while(*p)
+      {
+          data(*p);
+          p++;
+      }
+  }
+  

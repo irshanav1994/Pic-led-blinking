@@ -1,0 +1,41 @@
+
+
+
+TIMER 2-PGM-2
+generate  square wave  delay of 10 ms=.01
+apply PR2 by eqn in pgm
+
+delay=TOSC*4*PRESCALE*(PR2+1)*POSTSCALE(in time domain)
+PR2=(FOSC*DELAY)/4*PRESCAL*POSTSCALE///this eqn is ued here//
+
+
+#include <xc.h>
+#define fosc 20000000// no need of semi colon
+#define pre 16//pre scaler
+#define  POS 16
+#define del .01//delay 10MS
+#define a ((int)(fosc *del)/(4*pre*POS))//eqn pre defined value
+void delay(void);
+void main(void) {
+
+    TRISC=0X00;
+    T2CON=0X7e;//TIMER CONFIGURE
+  PR2=a; 
+     while(1)
+    {
+            PORTC=0XFF;
+            delay();
+            PORTC=0X00;
+            delay();
+    }
+    return;
+}
+void delay(void)
+{
+   
+    while(TMR2IF==0);//FLAG 1 AANONN CHECK CHEYYAAN(OVERFLOW AAYONNN ARYAAN)
+    TMR2IF=0;//1 AAYAL 0 AAKAAN
+    PR2=a;//INITIAL TIMER VALUE ITH VARY CHEYYAAM DELAY KURAYKKUNNA ANSARICH
+ 
+}
+ //eqn idum

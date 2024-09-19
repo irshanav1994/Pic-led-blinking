@@ -1,0 +1,101 @@
+ Two POTs are connected ANO &AN1 pins and display first pot [AN0] in first line display n LCD and 2ND POT [AN1] in 2nd line in LCD.
+
+
+
+
+ 
+    #include <xc.h>
+#include<stdio.h>
+void cmd(unsigned char a );
+void data(unsigned char a );
+void display(const char *p);
+
+void main(void)
+{
+    TRISC=TRISD=0X00;
+    TRISA=0X01;
+    
+    cmd(0X01);
+    cmd(0X0F);
+    cmd(0X38);
+    cmd(0x0c);
+  
+    ADCON1=0X00;
+    ADCON2=0X86;
+       
+  
+   
+   
+    while(1)
+    {
+        ADCON0=0X01;//AN0 pin is used-1st pot connected here-000-ADCON0 is [00000001]//
+        
+        int adc;
+        char cnv[15];
+        GO=1;//convertion start//
+        while(ADIF==0);//check the ad flag is zero//
+        ADIF=0;
+        adc=ADRES;//store converted adc value //ADRESH ADRESL result high and low-common ADRES//
+        sprintf(cnv,"adc value %4d",adc);//convert cheytha value string leku matan//
+     
+        cmd(0X80);
+        display(cnv);
+    
+       
+    
+        ADCON0=0X05;//AN1 PIN is used .set ADCON0 by 001[00000101]//
+       int adc2;
+        char conv[15];
+        GO=1;//convertion start//
+        while(ADIF==0);//check the ad flag is zero//
+        ADIF=0;
+        adc2=ADRES;//store converted adc value //ADRESH ADRESL result high and low-common ADRES//
+        sprintf(conv,"adc2 value %4d",adc2);//convert cheytha value string leku matan//
+       
+        cmd(0XC0);
+        display(conv);
+    
+    }
+   
+   return;
+}
+
+
+void cmd(unsigned char a )  
+{
+    RC0=0;
+
+   //RC1=0;//enable pin connected to ground//
+    PORTD=a;
+    RC2=1;
+    for(int i=0;i<=100;i++);
+    RC2=0;
+    for(int i=0;i<=5000;i++);
+}
+
+
+
+void data(unsigned char a ) 
+{
+    RC0=1;
+    //RC1=0;
+    PORTD=a;
+    RC2=1;
+    for(int i=0;i<=100;i++);
+    RC2=0;
+    for(int i=0;i<=5000;i++);
+}
+
+void display(const char *p) 
+{
+    while(*p)
+    {
+        data(*p);
+        p++;
+    }
+}
+
+
+
+
+

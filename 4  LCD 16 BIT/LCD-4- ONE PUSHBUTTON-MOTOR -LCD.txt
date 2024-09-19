@@ -1,0 +1,122 @@
+if button is pressed[on],rotate motor clockwise then show in lcd clockwise.
+next press of button[2 nd press or 2nd on] rotate motor anti clockwise then show in lcd anti clockwise.
+next press of button [3 rd press or 3rd on]stop motor then show in lcd stop.
+
+
+
+
+
+#include <xc.h>
+
+void cmd (unsigned char a);
+void data(unsigned char a);
+void display (const char *p);
+
+void main(void) 
+{
+    
+    TRISC=0X01;//switch is input it connected RC0//
+    TRISD=0X00;//PORTD as output-lcd and motor are outputs,it connected here//
+    int count=-1;
+    
+    cmd(0X01);
+    cmd(0X0F);
+    
+    
+  while(1)
+    {   //this brace close is changed.closed after display stop command.
+  
+        
+        if(RC0==1)
+        {
+            if(count==2)
+            {
+                count=-1;
+            }
+        
+        
+        count++;
+        while(RC0==1);
+        
+  //  whilebrace is normally closed here in motor pgm [while brace]but now it changed to after of stop instruction for avoid continuous display of clockwise,anti,stop.
+and clear command also here needed//
+
+        cmd(0X01); // it is a clear command TO SHOW DISPLAY COMMANDS[clockwise anticlockwise stop] ONLY ONE [NOT CONTINUOUSLY]//
+            
+            
+        if(count==0)
+            
+        {
+            
+            PORTC=0X02;
+            display("clockwise"); 
+            
+           
+          
+ }
+           
+           
+            
+        
+ else if(count==1)
+         {
+          PORTC=0X04;
+        
+         display("anticlockwise");
+        
+         
+            
+         }
+            
+      
+           else if(count==2)
+         {
+        PORTC=0X00;
+        
+         
+   display("stop");
+  
+  
+            
+         }
+        }
+        
+}
+
+while(1);  
+ return;
+    }
+
+
+ void cmd (unsigned char a)
+  {
+     
+    RC5=0;
+    RC6=0;
+    PORTD=a;
+    RC7=1;
+    for(int i=0;i<=100;i++);
+    RC7=0;
+    for(int i=0;i<=5000;i++);
+}
+  
+  void data(unsigned char a)
+  {
+       RC5=1;
+    RC6=0;
+    PORTD=a;
+    RC7=1;
+    for(int i=0;i<=100;i++);
+    RC7=0;
+      for(int i=0;i<=5000;i++);
+  }
+  
+  void display (const char *p)
+  {
+      while(*p)
+      {
+          data(*p);
+          p++;
+      }
+  }
+  

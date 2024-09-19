@@ -1,0 +1,30 @@
+3---TO BLINK 8 LEDS OF PORT C ONE BY ONE USING FOR LOOP
+
+0x01=1(decimal value)---------- for(int j=1;j<=128;j=j*2)
+
+0x02=2
+0x04=4
+0x08=8
+ox10=16
+0x20=32
+0x40=64
+0x80=128
+
+
+
+#include <xc.h>
+
+void main(void) {
+    
+    TRISC=0X00;
+    while(1)
+    {
+        for(int j=1;j<=128;j=j*2)
+        {
+            PORTC=j;
+        
+        for(unsigned int i=0;i<=62000;i++);
+        }    
+    }
+    return;
+}

@@ -1,0 +1,33 @@
+LCD--2---TYPE1-CLEAR LCD USING FUNCTION
+
+
+
+#include <xc.h>
+
+void data(unsigned char a );//portd is 8bit so need 1 byte datatype& it is +ve also.so unsigned char is used here//
+
+void main(void) {
+    TRISC=TRISD=0X00;
+    data(0x01);
+    data(0x0f);
+    return;
+}
+
+
+void data(unsigned char a )
+{
+    RC0=0;
+    RC1=0;
+    PORTD=a;
+    RC2=1;
+    for(int i=0;i<=100;i++);
+    RC2=0;
+    for(int i=0;i<=5000;i++);
+}
+
+
+
+
+
+
+

@@ -1,0 +1,29 @@
+#include <pic18.h>
+void delay(void);
+
+void main(void)
+{
+    TRISD=0X00;//
+    
+    T0CON=0XC7;
+    TMR0=60.68;
+    while(1)
+    {
+        PORTD=0XFF;
+        delay();
+        PORTD=0X00;
+        delay();
+    }
+    return;
+}
+
+
+void delay(void)
+{
+    for(int i=0;i<100;i++)//10ms*100=1000ms=1s t make delay of 1s//
+    {
+    while(TMR0IF==0);//check [2nd bit of intcon interrupt register is]TMR0IF one// 
+        TMR0IF=0;//clear TMR0IF//
+    TMR0=60.68;//set initial value to start again from same position//
+    }
+}

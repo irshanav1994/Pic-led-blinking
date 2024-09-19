@@ -1,0 +1,45 @@
+interrupt
+
+BARGRA LED  IS USED-[2]
+
+
+
+
+#include <xc.h>
+
+void main(void) {
+    TRISC=TRISD=0X00;
+    TRISB=0X01;
+    ADCON1=0X0F;//PORT B analog to digital//
+    TXSTA=0X24;
+    RCSTA=0X90;
+    SPBRG=129;
+    INTCON=0XD0;//register set//
+    
+    while(1)
+    {
+    PORTC=0XFF;
+    for(unsigned int i=0;i<=60000;i++);
+    PORTC=0X00;
+    for(unsigned int i=0;i<=60000;i++);
+}
+
+return;
+}
+
+void __interrupt() ISR()
+{
+   if (INT0IF==1) //checking interrupt flag is one,then interrupt is occur then perform shifting by pausing blink operation//
+
+{
+    
+    for(int i=1;i<=128;i=i*2)
+    {
+        PORTD=i;
+         for(unsigned int i=0;i<=60000;i++);
+    }
+    INT0IF=0;//reset interrupt flag for to know or set 1for  next interrupt is occur//
+}
+}
+
+   

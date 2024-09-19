@@ -1,0 +1,51 @@
+3----inputsection-pullup ckt- if switch is(press) ON led ON in next ON of switch(press switch) led need to off next swith is press(ON) then led need to blink-[one switch three operations][like :Tv remote function]
+
+
+
+#include <xc.h>
+  void main(void)
+ {
+      TRISC=0x01;    /*set RC0 in  portc as input port */
+      TRISD=0x00;   /*set all pins in  portd as output port */
+
+      int count=-1;  /*set count=-1 bz count++ then become count==0 then only first condition satisfy and led on*/
+
+    while(1)
+    {
+        if(RC0==1)  /*RC0 pin in PORT C is high(input high-switch is pressed or ON)*/
+        {
+            if(count==2)   /*this condition is not satisfied,bz count is-1.so it go to count++ then count==0*/
+            {
+                count=-1;
+            }
+            count++;
+            
+            while(RC0==1);
+        }
+         if(count==0)    /*condition satisfied and led make ON by PORTD=0X01 */ the go to back first sectionif(RC0==1)and check count corresponding statement is going to work
+
+            {
+            PORTD=0X01;
+            
+            }
+            else if(count==1)
+            {
+            PORTD=0X00;
+            
+            }
+            else  if(count==2)
+            {
+PORTD=0X01;
+                for(unsigned int i=0;i<=65000 && RC0==0;i++);       /*providing delay.&&s used here last blinking then it start from led                        on,in b/w this need to press switch for some times, it avoid by i<=65000 && RC0==0.led blinking keep till RC0=0[low input-switch off] 
+
+
+
+
+
+                PORTD=0X00;
+                for(unsigned int i=0;i<=65000 && RC0==0;i++);
+                
+                
+            }
+    }
+  }

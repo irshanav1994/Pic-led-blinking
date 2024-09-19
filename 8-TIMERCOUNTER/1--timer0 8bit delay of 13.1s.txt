@@ -1,0 +1,41 @@
+
+
+OSCILLOSCOPE USED
+
+debug 
+oscilloscope to view graph
+ channel A make dc
+1--timer0
+8 bit
+delay=(4*prescale*(2^n-TMR0))/frequency(20*10^6)
+delay=(4*256*(2^8-00))/20*10^6
+delay=0.0131=13.1
+we get output as square wave delay f 13.1
+
+
+#include <pic18.h>
+void delay(void);
+
+void main(void)
+{
+    TRISD=0X00;//set as output,connect oscilloscope here [channel A,B,C,D,any one channel is connected]
+    
+    T0CON=0XC7;//set timer0con 8 bit reister//
+    TMR0=00;//set initial value//
+    while(1)
+    {
+        PORTD=0XFF;
+        delay();
+        PORTD=0X00;
+        delay();
+    }
+    return;
+}
+
+
+void delay(void)
+{
+    while(TMR0IF==0);//check [2nd bit of intcon interrupt register is]TMR0IF one then go back to zero[overflow]// 
+        TMR0IF=0;//clear TMR0IF//
+    TMR0=00;//set initial value to start again from same position//
+}

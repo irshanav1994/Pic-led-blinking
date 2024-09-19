@@ -1,0 +1,87 @@
+ 
+
+PGM4-ADC display in 7segment 4digit display
+
+pot-hg
+mpx4cc
+
+2^10=1025-1=1024
+digit4=4
+digit3=2
+digit2=0
+digit1=1
+
+1024 -ach digit obtained by taking quotient and reminder .
+
+
+    #include <xc.h>
+void main(void)
+{
+    TRISC=TRISD=0X00;
+    TRISA=0X01;
+    int dig[4];
+  
+    ADCON1=0X00;
+    ADCON2=0X86;
+       
+       
+        unsigned char a[10]={ 0X3F,0X06,0X5B,0X4F,0X66,0X6D,0X7D,0X07,0X7F,0X6F};
+
+  
+   
+   
+    while(1)
+    {
+       ADCON0=0X01; 
+        for(unsigned int i=0;i<=1000;i++);
+        
+        int adc;
+        
+        GO=1;//convertion start//
+        while(ADIF==0);//check the ad flag is zero//
+        ADIF=0;
+        adc=ADRES;//store converted adc value //ADRESH ADRESL result high and low-common ADRES//
+        //sprintf(cnv,"adc value %4d",adc);7SEG NOT NEED TO CONVERT STRING//[convert cheytha value string leku matan]//
+        int dig1,dig2,dig3,dig4;
+     
+          
+          dig1=adc%10;
+           adc=adc/10;
+           
+           dig2=adc%10;
+            adc=adc/10;
+        
+      
+         dig3=adc%10;
+            adc=adc/10;
+    
+       
+           dig4=adc%10;
+            adc=adc/10;
+            
+            PORTD=0X0E;
+            PORTC=a[dig4];
+            for(unsigned int i=0;i<=1000;i++);
+             PORTD=0X0D;
+            PORTC=a[dig3];
+             for(unsigned int i=0;i<=1000;i++);
+             PORTD=0X0B;
+            PORTC=a[dig2];
+             for(unsigned int i=0;i<=1000;i++);
+             PORTD=0X07;
+            PORTC=a[dig1];
+             for(unsigned int i=0;i<=1000;i++);
+     
+      }
+       
+    
+    
+    
+   return;
+}
+
+
+
+
+
+ 

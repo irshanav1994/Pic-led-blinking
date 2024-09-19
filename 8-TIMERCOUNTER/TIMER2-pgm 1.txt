@@ -1,0 +1,36 @@
+tImer 2--8 bit
+
+
+
+
+
+
+#include <xc.h>
+void delay(void);
+ int a;
+ a=(int)(1/20000000)*4*16*256*16;//not need yhis eqn here//
+void main(void) {
+
+    TRISC=0X00;
+    T2CON=0X7E;//TIMER CONFIGURE
+    PR2=255;
+ 
+     while(1)
+    {
+            PORTC=0XFF;
+            delay();
+            PORTC=0X00;
+            delay();
+    }
+    return;
+}
+void delay(void)
+{
+   
+    while(TMR2IF==0);//FLAG 1 AANONN CHECK CHEYYAAN(OVERFLOW AAYONNN ARYAAN)
+    TMR2IF=0;//1 AAYAL 0 AAKAAN
+PR2=255;
+ 
+ 
+} 
+}
